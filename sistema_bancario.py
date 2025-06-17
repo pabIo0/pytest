@@ -22,6 +22,7 @@ while True:
         if deposito > 0:
             saldo_atual += deposito
             historico += f"Depósito: R$ {deposito:.2f}\n"
+            print(f"\nDepósito de R$ {deposito:.2f} realizado!")
         else:
             print("Erro: valor inválido para depósito.")
 
@@ -45,7 +46,6 @@ while True:
             saldo_atual -= saque
             historico += f"Saque: R$ {saque:.2f}\n"
             print(f"\nSaque de R$ {saque:.2f} realizado!")
-            print(f"Saldo restante: R$ {saldo_atual:.2f}\n")
             quantidade_saques += 1
         else:
             print("Erro: valor inválido para saque.")
