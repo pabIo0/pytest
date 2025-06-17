@@ -1,5 +1,7 @@
 from adaptado_sis_banc import deposito, saque, extrato, sair
+import pytest
 
+@pytest.mark.deposito
 def test_deposito_valido():
     saldo = 0
     historico = []
@@ -8,6 +10,7 @@ def test_deposito_valido():
     assert "Depósito: R$ 100.00" in novo_historico
     assert mensagem == "Depósito realizado!"
 
+@pytest.mark.deposito
 def test_deposito_invalido():
     saldo = 0
     historico = []
@@ -16,6 +19,7 @@ def test_deposito_invalido():
     assert len(novo_historico) == 0
     assert mensagem == "Erro: valor inválido para depósito."
 
+@pytest.mark.saque
 def test_saque_valido():
     saldo = 200
     historico = []
@@ -28,6 +32,20 @@ def test_saque_valido():
     assert novo_quantidade == 1
     assert mensagem == "Saque realizado!"
 
+@pytest.mark.saque
+def test_saque_valor_invalido():
+    saldo = 200
+    historico = []
+    quantidade_saques = 0
+    novo_saldo, novo_historico, novo_quantidade, mensagem = (
+        saque(saldo, historico, -10, quantidade_saques, 3, 500)
+    )
+    assert novo_saldo == 200
+    assert len(novo_historico) == 0
+    assert novo_quantidade == 0
+    assert mensagem == "Erro: valor inválido para saque."
+
+@pytest.mark.saque
 def test_saque_saldo_insuficiente():
     saldo = 50
     historico = []
@@ -40,6 +58,7 @@ def test_saque_saldo_insuficiente():
     assert novo_quantidade == 0
     assert mensagem == "Erro: saldo insuficiente."
 
+@pytest.mark.saque
 def test_saque_limite_excedido():
     saldo = 1000
     historico = []
@@ -52,6 +71,7 @@ def test_saque_limite_excedido():
     assert novo_quantidade == 0
     assert mensagem == "Erro: o valor excede o limite permitido por saque."
 
+@pytest.mark.saque
 def test_saque_numero_maximo_excedido():
     saldo = 1000
     historico = []
@@ -64,6 +84,7 @@ def test_saque_numero_maximo_excedido():
     assert novo_quantidade == 3
     assert mensagem == "Erro: número de saques diários excedido."
 
+@pytest.mark.extrato
 def test_extrato_sem_movimentacoes():
     saldo = 0
     historico = []
@@ -71,6 +92,7 @@ def test_extrato_sem_movimentacoes():
     assert "Nenhuma movimentação registrada." in resultado
     assert "Saldo disponível: R$ 0.00" in resultado
 
+@pytest.mark.extrato
 def test_extrato_com_movimentacoes():
     saldo = 150
     historico = ["Depósito: R$ 100.00", "Depósito: R$ 50.00"]
@@ -79,6 +101,7 @@ def test_extrato_com_movimentacoes():
     assert "Depósito: R$ 50.00" in resultado
     assert "Saldo disponível: R$ 150.00" in resultado
 
+@pytest.mark.sair
 def test_sair():
     valor = ""
 
